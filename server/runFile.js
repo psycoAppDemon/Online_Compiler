@@ -8,13 +8,13 @@ if (!fs.existsSync(dirOutput)) {
   fs.mkdirSync(dirOutput, { recursive: true }); //mkdirSync
 }
 
-const executeCPP = async (filePath) => {
+const executeCPP = async (filePath, inputPath) => {
   const submissionId = path.basename(filePath).split(".")[0];
-  const outPath = path.join(dirOutput, `${submissionId}.exe`);
-  console.log(outPath,dirOutput,submissionId);
+  const outPath = path.join(dirOutput, `${submissionId}.out`);
+  //console.log(outPath,dirOutput,submissionId);
   return new Promise((resolve, reject) => {
     exec(
-      `g++ ${filePath} -o ${outPath} && cd ${dirOutput} && .\\${submissionId}.exe`,
+      `g++ ${filePath} -o ${outPath} && cd ${dirOutput} && ./${submissionId}.out < ${inputPath}`,// .out for linux
       (err, stdout, stderr) => {
         if (err) {
           reject(err);

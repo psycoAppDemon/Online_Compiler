@@ -8,12 +8,26 @@ if(!fs.existsSync(dirCodes)){
     fs.mkdirSync(dirCodes, {recursive: true});//mkdirSync
 }
 
-const generateFile = async (language, code) => {
+const dirInputs = path.join(__dirname,'input');// __dirname gives the path to current path
+
+if(!fs.existsSync(dirInputs)){
+    fs.mkdirSync(dirInputs, {recursive: true});//mkdirSync
+}
+
+const generateCodeFile = async (language, code) => {
     const submissionId = uuid();
     const fileName = `${submissionId}.${language}`;
     const filePath = path.join(dirCodes,fileName);
-    fs.writeFileSync(filePath,code);
+    await fs.writeFileSync(filePath,code);// why sync method when function is async
+    return filePath;
+};
+const generateInputFile = async (input) => {
+    const inputId = uuid();
+    const fileName = `${inputId}.txt`;
+    const filePath = path.join(dirInputs,fileName);
+    console.log(filePath);
+    await fs.writeFileSync(filePath,input);
     return filePath;
 };
 
-module.exports = { generateFile };
+module.exports = {  generateInputFile, generateCodeFile };
